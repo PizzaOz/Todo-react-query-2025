@@ -12,7 +12,7 @@ export function useCreateTodo() {
     //     queryClient.invalidateQueries(todoListApi.getTodoListQueryOptions({page: 1}))
     // },
     async onSettled() {
-       await queryClient.invalidateQueries(todoListApi.getTodoListQueryOptions({page: 1}))
+       await queryClient.invalidateQueries({ queryKey: ["task", "list"] })
     },
   });
 

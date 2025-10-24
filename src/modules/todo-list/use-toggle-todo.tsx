@@ -8,43 +8,48 @@ export function useToggleTodo() {
     mutationFn: todoListApi.updateTodo,
 
     onMutate: async (newTodo) => {
-      await queryClient.cancelQueries(
-        todoListApi.getTodoListQueryOptions({ page: 1 })
-      );
+      // Отменяем все запросы связанные со списком задач
+      await queryClient.cancelQueries({ queryKey: ["task", "list"] });
 
-      const previousTodos = queryClient.getQueryData(
-        todoListApi.getTodoListQueryOptions({ page: 1 }).queryKey
-      );
+      // Сохраняем предыдущее состояние ВСЕХ страниц
+      const previousQueries = queryClient.getQueriesData({ 
+        queryKey: ["task", "list"] 
+      });
 
-      queryClient.setQueryData(
-        todoListApi.getTodoListQueryOptions({ page: 1 }).queryKey,
-        (old) => {
-          if (!old) return old;
+      // Обновляем ВСЕ страницы, где есть этот todo
+      queryClient.setQueriesData(
+        { queryKey: ["task", "list"] },
+        (old: any) => {
+          if (!old || !old.data) return old;
+          
+          // Проверяем, есть ли обновляемый todo на этой странице
+          const todoIndex = old.data.findIndex((todo: any) => todo.id === newTodo.id);
+          if (todoIndex === -1) return old; // Не на этой странице
+
           return {
             ...old,
-            data: old.data.map((todo) =>
+            data: old.data.map((todo: any) =>
               todo.id === newTodo.id ? { ...todo, ...newTodo } : todo
             ),
           };
         }
       );
 
-      return { previousTodos };
+      return { previousQueries };
     },
 
     onError: (_, __, context) => {
-        if (context?.previousTodos) {
-          queryClient.setQueryData(
-            todoListApi.getTodoListQueryOptions({ page: 1 }).queryKey,
-            context.previousTodos
-          );
-        }
-      },
+      // Восстанавливаем ВСЕ предыдущие состояния
+      if (context?.previousQueries) {
+        context.previousQueries.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
+        });
+      }
+    },
 
     onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: todoListApi.getTodoListQueryOptions({ page: 1 }).queryKey,
-      });
+      // Инвалидируем ВСЕ запросы списка задач
+      queryClient.invalidateQueries({ queryKey: ["task", "list"] });
     },
   });
 
@@ -57,5 +62,6 @@ export function useToggleTodo() {
 
   return {
     toggleTodo,
+    isPending: updateTodoMutation.isPending
   };
 }
