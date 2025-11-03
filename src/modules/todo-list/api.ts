@@ -22,18 +22,10 @@ export type TodoDto = {
 };
 
 export const todoListApi = {
-  // getTodoList: (
-  //   {page}: {page: number},
-  //   { signal }: { signal: AbortSignal
-  //   }) => {
-  //   return fetch(`${BASE_URL}/tasks?_page=${page}&_per_page=10`, {
-  //     signal,
-  //   }).then((res) => res.json() as Promise<PaginatedResult<TodoDto>>);
-  // },
+  baseKey: "tasks",
   getTodoListInfinityQueryOptions: () => {
-    // вынес повторяему логику из useInfiniteQuery
     return infiniteQueryOptions({
-      queryKey: ["task", "list"],
+      queryKey: [todoListApi.baseKey, "list"],
       queryFn: (meta) =>
         jsonApiInstance<PaginatedResult<TodoDto>>(
           `/tasks?_page=${meta.pageParam}&_per_page=10&_sort=-createdAt`,
@@ -47,7 +39,7 @@ export const todoListApi = {
   getTodoListQueryOptions: ({ page }: { page: number }) => {
     // вынес повторяему логику из useQuery
     return queryOptions({
-      queryKey: ["task", "list", { page }],
+      queryKey: [todoListApi.baseKey, "list", { page }],
       queryFn: (meta) =>
         jsonApiInstance<PaginatedResult<TodoDto>>(
           `/tasks?_page=${page}&_per_page=10&_sort=-createdAt`,

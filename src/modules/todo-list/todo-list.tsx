@@ -1,12 +1,9 @@
-// import React from "react";
 import { useUser } from "../auth/use-user";
 import { useCreateTodo } from "./use-create-todo";
 import { useDeleteTodo } from "./use-delete-todo";
 import { useTodoList } from "./use-todo-list";
 import { useToggleTodo } from "./use-toggle-todo";
-// import { useMutation } from "@tanstack/react-query";
-// import { todoListApi } from "./api";
-// import { nanoid } from "nanoid";
+
 
 export function TodoList() {
   const {
@@ -24,24 +21,6 @@ export function TodoList() {
   const deleteTodo = useDeleteTodo();
   const { toggleTodo } = useToggleTodo();
 
-  // const createTodoMutation = useMutation({
-  //   mutationFn: todoListApi.createTodo
-  // })
-
-  //  const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
-  //   const formData = new FormData(e.currentTarget)
-
-  //   const text = String(formData.get('text') ?? '')
-
-  //   createTodoMutation.mutate({
-  //     id: nanoid(),
-  //     done: false,
-  //     text: text,
-  //     userId: '1',
-  //     createdAt: new Date().toISOString(),
-  //   })
-  //   e.currentTarget.reset()
-  //  }
 
   if (isLoading) {
     return <div>Loding</div>;
@@ -61,7 +40,7 @@ export function TodoList() {
           name="text"
         />
         <button
-          disabled={createTodo.isPending}
+          disabled={createTodo.isLoding}
           className="rounded p-2 border border-teal-500 disabled:opacity-50"
         >
           Создать

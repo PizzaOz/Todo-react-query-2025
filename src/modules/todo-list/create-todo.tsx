@@ -17,7 +17,7 @@ export function CreateTodo() {
           name="text"
         />
         <button
-          disabled={createTodo.isPending}
+          disabled={createTodo.isLoding}
           className="rounded p-2 border border-teal-500 disabled:opacity-50"
         >
           Создать

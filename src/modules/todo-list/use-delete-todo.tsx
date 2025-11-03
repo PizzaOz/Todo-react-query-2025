@@ -9,7 +9,7 @@ export function useDeleteTodo() {
     onSuccess: (_, deleteId) => {
       // Обновляем ВСЕ страницы, где есть этот todo
       queryClient.setQueriesData(
-        { queryKey: ["task", "list"] },
+        { queryKey: [todoListApi.baseKey] },
         (old: PaginatedResult<TodoDto> | undefined) => {
           if (!old) return old;
           return {

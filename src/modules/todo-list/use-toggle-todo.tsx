@@ -9,16 +9,16 @@ export function useToggleTodo() {
 
     onMutate: async (newTodo) => {
       // Отменяем все запросы связанные со списком задач
-      await queryClient.cancelQueries({ queryKey: ["task", "list"] });
+      await queryClient.cancelQueries({ queryKey: [todoListApi.baseKey] });
 
       // Сохраняем предыдущее состояние ВСЕХ страниц
       const previousQueries = queryClient.getQueriesData({ 
-        queryKey: ["task", "list"] 
+        queryKey: [todoListApi.baseKey] 
       });
 
       // Обновляем ВСЕ страницы, где есть этот todo
       queryClient.setQueriesData(
-        { queryKey: ["task", "list"] },
+        { queryKey: [todoListApi.baseKey] },
         (old: any) => {
           if (!old || !old.data) return old;
           
@@ -49,7 +49,7 @@ export function useToggleTodo() {
 
     onSettled: () => {
       // Инвалидируем ВСЕ запросы списка задач
-      queryClient.invalidateQueries({ queryKey: ["task", "list"] });
+      queryClient.invalidateQueries({ queryKey: [todoListApi.baseKey] });
     },
   });
 
