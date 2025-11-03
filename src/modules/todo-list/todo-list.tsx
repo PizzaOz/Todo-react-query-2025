@@ -12,7 +12,7 @@ export function TodoList() {
     isLoading,
     isPlaceholderData,
     buttonPagination,
-    setEnabled,
+    // setEnabled,
   } = useTodoList();
 
   const userQuery = useUser()
@@ -46,7 +46,7 @@ export function TodoList() {
           Создать
         </button>
       </form>
-      <button onClick={() => setEnabled((e) => !e)}>enabled</button>
+      {/* <button onClick={() => setEnabled((e) => !e)}>enabled</button> */}
       <div
         className={
           "flex flex-col gap-4" + (isPlaceholderData ? " opacity-50" : "")

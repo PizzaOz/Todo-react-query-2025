@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export  function useTodoList(){
     const [page, setPage] = useState(1);
-    const [enabled, setEnabled] = useState(false)
+    // const [enabled, setEnabled] = useState(false)
   
     const {
       data: todoItems,
@@ -16,7 +16,7 @@ export  function useTodoList(){
     } = useQuery({
       ...todoListApi.getTodoListQueryOptions({page}),
       placeholderData: keepPreviousData,
-      enabled: enabled
+      // enabled: enabled
     });
 
     const buttonPagination = (
@@ -37,6 +37,6 @@ export  function useTodoList(){
     )
   
 
-    return {error, todoItems, isLoading, isPlaceholderData, buttonPagination, setEnabled}
+    return {error, todoItems, isLoading, isPlaceholderData, buttonPagination, /*setEnabled*/}
 }
 

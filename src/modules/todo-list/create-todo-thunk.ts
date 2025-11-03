@@ -51,7 +51,7 @@ export const createTodoThunc =
                 next: null,
                 prev: null,
             }),
-            data: [...(tasks?.data ?? []), newTodo],
+            data: [newTodo, ...(tasks?.data ?? [])],
             items: (tasks?.items ?? 0) + 1,
         })
     );

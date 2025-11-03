@@ -19,6 +19,9 @@ export function useDeleteTodo() {
         }
       );
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [todoListApi.baseKey] });
+    }
   });
 
   return {
