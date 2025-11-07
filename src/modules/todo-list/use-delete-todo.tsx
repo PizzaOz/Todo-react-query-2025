@@ -7,7 +7,6 @@ export function useDeleteTodo() {
   const deleteTodoMutation = useMutation({
     mutationFn: todoListApi.deleteTodo,
     onSuccess: (_, deleteId) => {
-      // Обновляем ВСЕ страницы, где есть этот todo
       queryClient.setQueriesData(
         { queryKey: [todoListApi.baseKey] },
         (old: PaginatedResult<TodoDto> | undefined) => {

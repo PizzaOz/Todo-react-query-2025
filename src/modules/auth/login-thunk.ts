@@ -8,14 +8,10 @@ export const loginThunk =
   (login: string, password: string): AppThunk =>
   async (dispatch) => {
 
-
-
     if (!login.trim() || !password.trim()) {
       dispatch(authSlice.actions.setError("Заполните логин и пароль"));
-      return; // ← важно: для входа новая логика проверки
+      return;
     }
-
-
 
     const user = await new MutationObserver(queryClient, {
       mutationKey: ['login'],
@@ -36,10 +32,9 @@ export const loginThunk =
       localStorage.setItem('userId', user.id)
     } else {
 
-      dispatch(authSlice.actions.setError("Пароль и Логин неверный")); // Перенес сюда ошибку 
+      dispatch(authSlice.actions.setError("Пароль и Логин неверный"));
     }
 
-    // dispatch(authSlice.actions.setError("Пароль и Логин неверный"));
   };
 
   export const useLoginLoding = () => 

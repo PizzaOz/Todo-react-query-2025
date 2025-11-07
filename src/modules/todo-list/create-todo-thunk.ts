@@ -11,15 +11,6 @@ export const createTodoThunc =
   async (_, getState) => {
 
     const userId = authSlice.selectors.userId(getState());
-    const formatCreatedAt = (date: Date) => {
-        return new Intl.DateTimeFormat('ru-RU', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        }).format(date);
-      };
 
     if (!userId) {
         throw new Error('user not login')
@@ -29,9 +20,10 @@ export const createTodoThunc =
     const newTodo: TodoDto = {
         id: nanoid(),
         done: false,
-        text: `${text} (Owner: ${user.login}, Created: ${formatCreatedAt(new Date())})`,
+        text: text,
         userId,
         createdAt: new Date().toISOString(),
+        login: user.login
     }
 
     queryClient.cancelQueries({
@@ -43,7 +35,6 @@ export const createTodoThunc =
     queryClient.setQueryData(
         todoListApi.getTodoListQueryOptions({page: 1}).queryKey,
         (tasks: PaginatedResult<TodoDto> | undefined) => ({
-            // Если tasks undefined, создаем базовую структуру
             ...(tasks || {
                 first: 1,
                 last: 1,

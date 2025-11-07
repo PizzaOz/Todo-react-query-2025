@@ -19,6 +19,7 @@ export type TodoDto = {
   done: boolean;
   userId: string;
   createdAt?: string;
+  login?: string
 };
 
 export const todoListApi = {
@@ -37,7 +38,6 @@ export const todoListApi = {
     });
   },
   getTodoListQueryOptions: ({ page }: { page: number }) => {
-    // вынес повторяему логику из useQuery
     return queryOptions({
       queryKey: [todoListApi.baseKey, "list", { page }],
       queryFn: (meta) =>

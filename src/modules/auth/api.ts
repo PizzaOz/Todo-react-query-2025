@@ -34,5 +34,14 @@ export const authApi = {
     return jsonApiInstance<UserDto[]>(
         `/users?login=${login}&password=${password}`
     ).then(r => r[0] as UserDto | undefined)
+  },
+  registerUser: (userData: { login: string; password: string }) => {
+    return jsonApiInstance<UserDto>('/users', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...userData,
+        id: Date.now().toString()
+      })
+    })
   }
 };

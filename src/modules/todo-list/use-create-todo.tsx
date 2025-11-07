@@ -16,6 +16,10 @@ export function useCreateTodo() {
     const formData = new FormData(e.currentTarget);
 
     const text = String(formData.get("text") ?? "");
+
+    if (!text) {
+      return; // Не создаем пустую задачу
+    }
     appDispatch(createTodoThunc(text))
 
     e.currentTarget.reset();

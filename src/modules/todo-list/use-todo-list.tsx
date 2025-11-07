@@ -1,22 +1,30 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { todoListApi } from "./api";
 import { useState } from "react";
+import { useUser } from "../auth/use-user";
+import { jsonApiInstance } from "../../shared/api/api-instance";
+import { PaginatedResult, TodoDto } from "./api";
 
-
-export  function useTodoList(){
+export function useTodoList(){
     const [page, setPage] = useState(1);
-    // const [enabled, setEnabled] = useState(false)
+    const userQuery = useUser();
   
     const {
       data: todoItems,
       error,
-      // isPending, поменял на isLoading сейчас используеться как ленивая загрузка 
       isPlaceholderData,
       isLoading
     } = useQuery({
-      ...todoListApi.getTodoListQueryOptions({page}),
+      // Добавляем userId в queryKey для кэширования
+      queryKey: [todoListApi.baseKey, "list", { page, userId: userQuery.data?.id }],
+      queryFn: (meta) =>
+        jsonApiInstance<PaginatedResult<TodoDto>>(
+          // Добавляем фильтр по userId в URL
+          `/tasks?_page=${page}&_per_page=10&_sort=-createdAt&userId=${userQuery.data?.id}`,
+          { signal: meta.signal }
+        ),
       placeholderData: keepPreviousData,
-      // enabled: enabled
+      enabled: !!userQuery.data?.id, // Запрос выполняется только когда известен userId
     });
 
     const buttonPagination = (
@@ -36,7 +44,6 @@ export  function useTodoList(){
       </div>
     )
   
-
-    return {error, todoItems, isLoading, isPlaceholderData, buttonPagination, /*setEnabled*/}
+    return {error, todoItems, isLoading, isPlaceholderData, buttonPagination}
 }
 
