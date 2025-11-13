@@ -3,8 +3,7 @@ import { AppThunk } from "../../shared/redux";
 import { queryClient } from "../../shared/api/query-client";
 import { authApi } from "./api";
 import { authSlice } from "./auth-slice";
-import { jsonApiInstance } from "../../shared/api/api-instance";
-import { UserDto } from "./api";
+import { supabase } from "../../shared/api/supabase-client";
 
 export const registerThunk =
   (login: string, password: string): AppThunk =>
@@ -20,14 +19,18 @@ export const registerThunk =
     }
 
     try {
-      // ПРОВЕРКА УНИКАЛЬНОСТИ ЛОГИНА
-      const existingUsers = await jsonApiInstance<UserDto[]>(`/users?login=${login}`);
-      if (existingUsers.length > 0) {
+      const { data: existingUsers, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('login', login);
+
+      if (error) throw new Error(error.message);
+      
+      if (existingUsers && existingUsers.length > 0) {
         dispatch(authSlice.actions.setError("Пользователь с таким логином уже существует"));
         return;
       }
 
-      // Если логин уникальный - создаем пользователя
       const user = await new MutationObserver(queryClient, {
         mutationKey: ['register'],
         mutationFn: () => authApi.registerUser({ login, password }),

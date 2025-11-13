@@ -1,47 +1,67 @@
-import {  queryOptions } from "@tanstack/react-query";
-import { jsonApiInstance } from "../../shared/api/api-instance";
-
-// const BASE_URL = "http://localhost:3000";
-
-export type PaginatedResult<T> = {
-  data: T[];
-  first: number;
-  items: number;
-  last: number;
-  next: number | null;
-  pages: number;
-  prev: number | null;
-};
+import { queryOptions } from "@tanstack/react-query";
+import { supabase } from "../../shared/api/supabase-client";
 
 export type UserDto = {
   id: string;
   login: string;
-  password: string
+  password: string;
+  createdAt?: string;
 };
 
 export const authApi = {
   baseKey: 'users',
+  
   getUserByid: (id: string) => {
     return queryOptions({
       queryKey: [authApi.baseKey, 'byId', id],
-      queryFn: meta =>
-        jsonApiInstance<UserDto>(`/users/${id}`, {
-            signal: meta.signal
-        }), 
+      queryFn: async (meta) => {
+        const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', id)
+          .abortSignal(meta.signal)
+          .single();
+
+        if (error) throw new Error(error.message);
+        return data as UserDto;
+      }, 
     });
   },
-  loginUser: ({ login, password } : {login: string, password: string}) => {
-    return jsonApiInstance<UserDto[]>(
-        `/users?login=${login}&password=${password}`
-    ).then(r => r[0] as UserDto | undefined)
+
+  loginUser: async ({ login, password }: {login: string, password: string}) => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('login', login)
+      .eq('password', password);
+
+    if (error) throw new Error(error.message);
+    return data?.[0] as UserDto | undefined;
   },
-  registerUser: (userData: { login: string; password: string }) => {
-    return jsonApiInstance<UserDto>('/users', {
-      method: 'POST',
-      body: JSON.stringify({
-        ...userData,
-        id: Date.now().toString()
-      })
-    })
+
+  registerUser: async (userData: { login: string; password: string }) => {
+    const newUser = {
+      ...userData,
+      id: Date.now().toString(),
+      // createdAt: new Date().toISOString(),
+    };
+  
+    const { data, error } = await supabase
+      .from('users')
+      .insert([newUser])
+      .select()
+      .single();
+  
+    if (error) {
+      console.error('❌ Supabase error details:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
+      throw new Error(error.message);
+    }
+    
+    return data as UserDto;
   }
 };

@@ -1,11 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { todoListApi } from "./api";
-import { useCallback, useRef, /* useState */ } from "react";
+import { useCallback, useRef } from "react";
 
-
-export  function useTodoListInfinity(){
-    // const [enabled, setEnabled] = useState(false)
-    
+export function useTodoListInfinity(){
     const {
         data: todoItems,
         error,
@@ -16,32 +13,25 @@ export  function useTodoListInfinity(){
         isFetchingNextPage,
       } = useInfiniteQuery({
         ...todoListApi.getTodoListInfinityQueryOptions(),
-        // enabled: enabled,
       });
-  
-    //   const cursorRef = useIntersection(() => {
-    //     if (enabled && hasNextPage) {
-    //         fetchNextPage()
-    //     }
-
-    //   })
 
     const cursorRef = useIntersection(() => {
-                fetchNextPage()
-          })
+        if (hasNextPage) {
+            fetchNextPage()
+        }
+    })
 
     const cursor = (
-        <div className="flex gap-2 mt-4" ref={/* enabled ? */ cursorRef /*: null */}>
-          {!hasNextPage && /* !enabled?<div> загрузите данные</div>: */<div>  Нет данных для загрузки</div>}
-          {isFetchingNextPage && <div>...Loding</div>}
+        <div className="flex gap-2 mt-4" ref={cursorRef}>
+          {!hasNextPage && <div>Нет данных для загрузки</div>}
+          {isFetchingNextPage && <div>...Loading</div>}
         </div>
     )
 
-    return {error, todoItems, isLoading, cursor, isPlaceholderData, /*setEnabled */}
+    return {error, todoItems, isLoading, cursor, isPlaceholderData}
 }
 
 export function useIntersection(onIntersect: () => void){
-
     const unsubscribe = useRef(() => {})
     return useCallback((el: HTMLDivElement | null) => {
         const observer = new IntersectionObserver((entris) => {

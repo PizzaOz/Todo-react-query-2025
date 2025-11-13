@@ -15,7 +15,6 @@ export function TodoItem({
 }: TodoItemProps) {
   return (
     <div className="border border-slate-300 rounded p-3 grid grid-cols-[200px_1fr_200px] gap-4 items-center">
-      {/* Имя пользователя - фиксированная ширина */}
       <div className="flex items-center gap-3 min-w-0">
         <input
           type="checkbox"
@@ -26,13 +25,9 @@ export function TodoItem({
           {todo.login ? `Owner: ${todo.login}` : ""}
         </span>
       </div>
-      
-      {/* Текст задачи - растягивается */}
       <span className="font-sans font-bold text-slate-700 truncate text-center">
         {todo.text}
       </span>
-      
-      {/* Дата и кнопка - фиксированная ширина */}
       <div className="flex items-center gap-4 justify-end">
         <span className="font-sans font-medium text-slate-700 whitespace-nowrap text-sm">
           {new Date(todo.createdAt || new Date()).toLocaleDateString("ru-RU")}

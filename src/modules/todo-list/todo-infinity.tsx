@@ -5,7 +5,8 @@ import { useToggleTodo } from "./use-toggle-todo";
 import { TodoItem } from "./todo-item";
 
 export function TodoListInfinity() {
-  const { error, todoItems, isLoading, cursor, isPlaceholderData } = useTodoListInfinity();
+  const { error, todoItems, isLoading, cursor, isPlaceholderData } =
+    useTodoListInfinity();
 
   const deleteTodo = useDeleteTodo();
   const { toggleTodo } = useToggleTodo();
@@ -14,9 +15,15 @@ export function TodoListInfinity() {
   if (error) return <div>error: {JSON.stringify(error)}</div>;
 
   return (
-    <>
-      <CreateTodoForm />
-      <div className={"flex flex-col gap-4" + (isPlaceholderData ? " opacity-50" : "")}>
+    <div className="grid grid-rows-[auto_1fr_auto] min-h-[80vh] gap-4">
+      <div>
+        <CreateTodoForm />
+      </div>
+      <div
+        className={
+          "flex flex-col gap-4" + (isPlaceholderData ? " opacity-50" : "")
+        }
+      >
         {todoItems?.map((todo) => (
           <TodoItem
             key={todo.id}
@@ -28,6 +35,6 @@ export function TodoListInfinity() {
         ))}
       </div>
       {cursor}
-    </>
+    </div>
   );
 }
