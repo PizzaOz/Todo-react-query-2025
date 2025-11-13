@@ -9,53 +9,57 @@ import { authApi } from "../auth/api";
 export const createTodoThunc =
   (text: string): AppThunk =>
   async (_, getState) => {
-
     const userId = authSlice.selectors.userId(getState());
 
     if (!userId) {
-        throw new Error('user not login')
+      throw new Error("user not login");
     }
-    const user = await queryClient.fetchQuery(authApi.getUserByid(userId))
+    const user = await queryClient.fetchQuery(authApi.getUserByid(userId));
 
     const newTodo: TodoDto = {
-        id: nanoid(),
-        done: false,
-        text: text,
-        userId,
-        createdAt: new Date().toISOString(),
-        login: user.login
-    }
+      id: nanoid(),
+      done: false,
+      text: text,
+      userId,
+      createdAt: new Date().toISOString(),
+      login: user.login,
+    };
 
     queryClient.cancelQueries({
-        queryKey: [todoListApi.baseKey]
+      queryKey: [todoListApi.baseKey],
     });
 
-    const prevTasks = queryClient.getQueryData(todoListApi.getTodoListQueryOptions({page: 1}).queryKey,)
+    const prevTasks = queryClient.getQueryData(
+      todoListApi.getTodoListQueryOptions({ page: 1 }).queryKey
+    );
 
     queryClient.setQueryData(
-        todoListApi.getTodoListQueryOptions({page: 1}).queryKey,
-        (tasks: PaginatedResult<TodoDto> | undefined) => ({
-            ...(tasks || {
-                first: 1,
-                last: 1,
-                pages: 1,
-                next: null,
-                prev: null,
-            }),
-            data: [newTodo, ...(tasks?.data ?? [])],
-            items: (tasks?.items ?? 0) + 1,
-        })
+      todoListApi.getTodoListQueryOptions({ page: 1 }).queryKey,
+      (tasks: PaginatedResult<TodoDto> | undefined) => ({
+        ...(tasks || {
+          first: 1,
+          last: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        }),
+        data: [newTodo, ...(tasks?.data ?? [])],
+        items: (tasks?.items ?? 0) + 1,
+      })
     );
     try {
-        await new MutationObserver(queryClient, {
-            mutationFn: todoListApi.createTodo,
-          }).mutate(newTodo)
-    } catch(e) {
-        queryClient.setQueryData(todoListApi.getTodoListQueryOptions({page: 1}).queryKey, prevTasks)
+      await new MutationObserver(queryClient, {
+        mutationFn: todoListApi.createTodo,
+      }).mutate(newTodo);
+    } catch (e) {
+      queryClient.setQueryData(
+        todoListApi.getTodoListQueryOptions({ page: 1 }).queryKey,
+        prevTasks
+      );
     } finally {
-        queryClient.invalidateQueries({
-            queryKey: [todoListApi.baseKey]
-        })
+      queryClient.invalidateQueries({
+        queryKey: [todoListApi.baseKey],
+      });
     }
   };
 

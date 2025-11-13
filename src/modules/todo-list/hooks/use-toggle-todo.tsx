@@ -10,8 +10,8 @@ export function useToggleTodo() {
     onMutate: async (newTodo) => {
       await queryClient.cancelQueries({ queryKey: [todoListApi.baseKey] });
 
-      const previousQueries = queryClient.getQueriesData({ 
-        queryKey: [todoListApi.baseKey] 
+      const previousQueries = queryClient.getQueriesData({
+        queryKey: [todoListApi.baseKey],
       });
 
       queryClient.setQueriesData(
@@ -19,7 +19,9 @@ export function useToggleTodo() {
         (old: any) => {
           if (!old || !old.data) return old;
 
-          const todoIndex = old.data.findIndex((todo: any) => todo.id === newTodo.id);
+          const todoIndex = old.data.findIndex(
+            (todo: any) => todo.id === newTodo.id
+          );
           if (todoIndex === -1) return old;
 
           return {
@@ -56,6 +58,6 @@ export function useToggleTodo() {
 
   return {
     toggleTodo,
-    isPending: updateTodoMutation.isPending
+    isPending: updateTodoMutation.isPending,
   };
 }

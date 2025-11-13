@@ -13,19 +13,19 @@ export function useDeleteTodo() {
           if (!old) return old;
           return {
             ...old,
-            data: old.data.filter(item => item.id !== deleteId)
+            data: old.data.filter((item) => item.id !== deleteId),
           };
         }
       );
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [todoListApi.baseKey] });
-    }
+    },
   });
 
   return {
     handleDelete: deleteTodoMutation.mutate,
-    getIsPending: (id: string) => 
-      deleteTodoMutation.isPending && deleteTodoMutation.variables === id
+    getIsPending: (id: string) =>
+      deleteTodoMutation.isPending && deleteTodoMutation.variables === id,
   };
 }

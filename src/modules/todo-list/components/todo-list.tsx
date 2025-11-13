@@ -5,13 +5,8 @@ import { useTodoList } from "../hooks/use-todo-list";
 import { useToggleTodo } from "../hooks/use-toggle-todo";
 
 export function TodoList() {
-  const {
-    error,
-    todoItems,
-    isLoading,
-    isPlaceholderData,
-    buttonPagination,
-  } = useTodoList();
+  const { error, todoItems, isLoading, isPlaceholderData, buttonPagination } =
+    useTodoList();
 
   const deleteTodo = useDeleteTodo();
   const { toggleTodo } = useToggleTodo();
@@ -24,7 +19,11 @@ export function TodoList() {
       <div>
         <CreateTodoForm />
       </div>
-      <div className={"flex flex-col gap-4" + (isPlaceholderData ? " opacity-50" : "")}>
+      <div
+        className={
+          "flex flex-col gap-4" + (isPlaceholderData ? " opacity-50" : "")
+        }
+      >
         {todoItems?.data.map((todo) => (
           <TodoItem
             key={todo.id}
@@ -40,9 +39,7 @@ export function TodoList() {
           </div>
         )}
       </div>
-      <div className="pt-4">
-        {buttonPagination}
-      </div>
+      <div className="pt-4">{buttonPagination}</div>
     </div>
   );
 }

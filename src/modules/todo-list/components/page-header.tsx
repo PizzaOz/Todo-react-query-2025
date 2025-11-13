@@ -8,14 +8,14 @@ interface PageHeaderProps {
 
 export function PageHeader({ onToggleView, isInfinityView }: PageHeaderProps) {
   const userQuery = useUser();
-  
+
   return (
     <div className="flex justify-between items-center mb-5">
       <h1 className="text-3xl font-bold underline">
-        Todo List {isInfinityView? "Все задачи": userQuery.data?.login}
+        Todo List {isInfinityView ? "Все задачи" : userQuery.data?.login}
       </h1>
       <div className="flex items-center gap-3">
-        <button 
+        <button
           onClick={onToggleView}
           className="rounded p-2 border border-teal-500 disabled:opacity-50"
         >

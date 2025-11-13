@@ -1,7 +1,6 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { supabase } from "../../shared/api/supabase-client";
 
-
 export type PaginatedResult<T> = {
   data: T[];
   first: number;
@@ -34,9 +33,9 @@ export const todoListApi = {
         const to = from + perPage - 1;
 
         const { data, error, count } = await supabase
-          .from('tasks')
-          .select('*', { count: 'exact' })
-          .order('createdAt', { ascending: false })
+          .from("tasks")
+          .select("*", { count: "exact" })
+          .order("createdAt", { ascending: false })
           .range(from, to)
           .abortSignal(meta.signal);
 
@@ -61,32 +60,38 @@ export const todoListApi = {
     });
   },
 
-  getTodoListQueryOptions: ({ page, userId }: { page: number; userId?: string }) => {
+  getTodoListQueryOptions: ({
+    page,
+    userId,
+  }: {
+    page: number;
+    userId?: string;
+  }) => {
     return queryOptions({
       queryKey: [todoListApi.baseKey, "list", { page, userId }],
       queryFn: async (meta) => {
         const perPage = 10;
         const from = (page - 1) * perPage;
         const to = from + perPage - 1;
-  
+
         let query = supabase
-          .from('tasks')
-          .select('*', { count: 'exact' })
-          .order('createdAt', { ascending: false })
+          .from("tasks")
+          .select("*", { count: "exact" })
+          .order("createdAt", { ascending: false })
           .range(from, to)
           .abortSignal(meta.signal);
 
         if (userId) {
-          query = query.eq('userId', userId);
+          query = query.eq("userId", userId);
         }
-  
+
         const { data, error, count } = await query;
-  
+
         if (error) throw new Error(error.message);
-  
+
         const totalItems = count || 0;
         const totalPages = Math.ceil(totalItems / perPage);
-  
+
         return {
           data: data || [],
           items: totalItems,
@@ -102,7 +107,7 @@ export const todoListApi = {
 
   createTodo: async (data: TodoDto) => {
     const { data: result, error } = await supabase
-      .from('tasks')
+      .from("tasks")
       .insert(data)
       .select()
       .single();
@@ -113,9 +118,9 @@ export const todoListApi = {
 
   updateTodo: async (data: Partial<TodoDto> & { id: string }) => {
     const { data: result, error } = await supabase
-      .from('tasks')
+      .from("tasks")
       .update(data)
-      .eq('id', data.id)
+      .eq("id", data.id)
       .select()
       .single();
 
@@ -124,10 +129,7 @@ export const todoListApi = {
   },
 
   deleteTodo: async (id: string) => {
-    const { error } = await supabase
-      .from('tasks')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from("tasks").delete().eq("id", id);
 
     if (error) throw new Error(error.message);
     return { success: true };

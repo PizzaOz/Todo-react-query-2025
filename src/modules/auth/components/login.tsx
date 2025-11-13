@@ -7,8 +7,8 @@ import { useState } from "react";
 export function Login() {
   const dispatch = useAppDispath();
   const loginError = useAppSelector(authSlice.selectors.loginError);
-  const isLoading = useLoginLoding()
-  const isRegisterLoading = useRegisterLoading()
+  const isLoading = useLoginLoding();
+  const isRegisterLoading = useRegisterLoading();
   const [isRegister, setIsRegister] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,21 +41,25 @@ export function Login() {
           type="password"
           placeholder="Пароль"
         />
-        {loginError && <div className="bg-rose-500 text-white p-3 rounded">{loginError}</div>}
-        
-        <button 
-          disabled={isLoading || isRegisterLoading} 
+        {loginError && (
+          <div className="bg-rose-500 text-white p-3 rounded">{loginError}</div>
+        )}
+
+        <button
+          disabled={isLoading || isRegisterLoading}
           className="p-3 rounded bg-teal-500 text-white disabled:bg-slate-300"
         >
           {isRegister ? "Зарегистрироваться" : "Войти"}
         </button>
 
-        <button 
+        <button
           type="button"
           className="p-2 text-blue-500 underline"
           onClick={() => setIsRegister(!isRegister)}
         >
-          {isRegister ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Зарегистрироваться"}
+          {isRegister
+            ? "Уже есть аккаунт? Войти"
+            : "Нет аккаунта? Зарегистрироваться"}
         </button>
       </form>
     </div>

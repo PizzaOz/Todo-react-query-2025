@@ -14,25 +14,31 @@ export const registerThunk =
     }
 
     if (password.length < 6) {
-      dispatch(authSlice.actions.setError("Пароль должен быть не менее 6 символов"));
+      dispatch(
+        authSlice.actions.setError("Пароль должен быть не менее 6 символов")
+      );
       return;
     }
 
     try {
       const { data: existingUsers, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('login', login);
+        .from("users")
+        .select("*")
+        .eq("login", login);
 
       if (error) throw new Error(error.message);
-      
+
       if (existingUsers && existingUsers.length > 0) {
-        dispatch(authSlice.actions.setError("Пользователь с таким логином уже существует"));
+        dispatch(
+          authSlice.actions.setError(
+            "Пользователь с таким логином уже существует"
+          )
+        );
         return;
       }
 
       const user = await new MutationObserver(queryClient, {
-        mutationKey: ['register'],
+        mutationKey: ["register"],
         mutationFn: () => authApi.registerUser({ login, password }),
       }).mutate();
 
@@ -42,16 +48,16 @@ export const registerThunk =
             userId: user.id,
           })
         );
-        
-        queryClient.setQueryData(authApi.getUserByid(user.id).queryKey, user)
-        localStorage.setItem('userId', user.id)
+
+        queryClient.setQueryData(authApi.getUserByid(user.id).queryKey, user);
+        localStorage.setItem("userId", user.id);
       }
     } catch (error) {
       dispatch(authSlice.actions.setError("Ошибка регистрации"));
     }
   };
 
-export const useRegisterLoading = () => 
+export const useRegisterLoading = () =>
   useMutation({
-      mutationKey: ['register']
-  }).isPending
+    mutationKey: ["register"],
+  }).isPending;

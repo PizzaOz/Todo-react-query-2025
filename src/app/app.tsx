@@ -9,15 +9,15 @@ export function App() {
   const [showInfinity, setShowInfinity] = useState(false);
   const user = useUser();
 
-  if(user.isLoading) {
-    return <div>Loading</div>
+  if (user.isLoading) {
+    return <div>Loading</div>;
   }
 
   if (user.data) {
     return (
       <div className="p-5 mx-auto max-w-[1200px] mt-10">
-        <PageHeader 
-          onToggleView={() => setShowInfinity(e => !e)}
+        <PageHeader
+          onToggleView={() => setShowInfinity((e) => !e)}
           isInfinityView={showInfinity}
         />
         {showInfinity ? <TodoListInfinity /> : <TodoList />}
@@ -25,5 +25,5 @@ export function App() {
     );
   }
 
-  return <Login/>
+  return <Login />;
 }

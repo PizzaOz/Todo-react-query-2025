@@ -7,14 +7,13 @@ import { authSlice } from "../auth-slice";
 export const loginThunk =
   (login: string, password: string): AppThunk =>
   async (dispatch) => {
-
     if (!login.trim() || !password.trim()) {
       dispatch(authSlice.actions.setError("Заполните логин и пароль"));
       return;
     }
 
     const user = await new MutationObserver(queryClient, {
-      mutationKey: ['login'],
+      mutationKey: ["login"],
       mutationFn: authApi.loginUser,
     }).mutate({
       login,
@@ -27,17 +26,15 @@ export const loginThunk =
           userId: user.id,
         })
       );
-      
-      queryClient.setQueryData(authApi.getUserByid(user.id).queryKey, user)
-      localStorage.setItem('userId', user.id)
-    } else {
 
+      queryClient.setQueryData(authApi.getUserByid(user.id).queryKey, user);
+      localStorage.setItem("userId", user.id);
+    } else {
       dispatch(authSlice.actions.setError("Пароль и Логин неверный"));
     }
-
   };
 
-  export const useLoginLoding = () => 
-    useMutation({
-        mutationKey: ['login']
-    }).isPending
+export const useLoginLoding = () =>
+  useMutation({
+    mutationKey: ["login"],
+  }).isPending;

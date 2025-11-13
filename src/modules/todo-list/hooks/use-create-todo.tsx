@@ -1,17 +1,13 @@
-
 import { useAppDispath } from "../../../shared/redux";
 import { createTodoThunc, useCreateLoding } from "../create-todo-thunk";
 
 export function useCreateTodo() {
-  const appDispatch = useAppDispath()
+  const appDispatch = useAppDispath();
 
-  const isLoding = useCreateLoding()
-
-
+  const isLoding = useCreateLoding();
 
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
-
-    e.preventDefault()
+    e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
@@ -20,13 +16,13 @@ export function useCreateTodo() {
     if (!text) {
       return;
     }
-    appDispatch(createTodoThunc(text))
+    appDispatch(createTodoThunc(text));
 
     e.currentTarget.reset();
   };
 
   return {
     handleCreate,
-    isLoding
-  }
+    isLoding,
+  };
 }

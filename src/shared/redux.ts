@@ -1,22 +1,22 @@
-import { combineSlices, configureStore, ThunkAction, UnknownAction } from "@reduxjs/toolkit";
+import {
+  combineSlices,
+  configureStore,
+  ThunkAction,
+  UnknownAction,
+} from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 export type AppState = any;
-export type AppThunk<R = void> = ThunkAction<
-    R,
-    AppState,
-    any,
-    UnknownAction
-  >;
+export type AppThunk<R = void> = ThunkAction<R, AppState, any, UnknownAction>;
 
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
 
-export const rootReducer = combineSlices()
+export const rootReducer = combineSlices();
 
 export const store = configureStore({
-    reducer: rootReducer
-})
+  reducer: rootReducer,
+});
 
 export const useAppSelector = useSelector.withTypes<AppState>();
 export const useAppDispath = useDispatch.withTypes<AppDispatch>();
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;
