@@ -13,4 +13,5 @@ export default defineConfig({
       }
     })
   ],
+  base: "/Todo-react-query-2025/",
 });
