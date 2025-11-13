@@ -1,8 +1,8 @@
 import { CreateTodoForm } from "./create-todo-form";
 import { TodoItem } from "./todo-item";
-import { useDeleteTodo } from "./use-delete-todo";
-import { useTodoList } from "./use-todo-list";
-import { useToggleTodo } from "./use-toggle-todo";
+import { useDeleteTodo } from "../hooks/use-delete-todo";
+import { useTodoList } from "../hooks/use-todo-list";
+import { useToggleTodo } from "../hooks/use-toggle-todo";
 
 export function TodoList() {
   const {

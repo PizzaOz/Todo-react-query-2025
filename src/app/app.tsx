@@ -1,9 +1,9 @@
-import { TodoList } from "../modules/todo-list/todo-list";
-import { TodoListInfinity } from "../modules/todo-list/todo-infinity";
+import { TodoList } from "../modules/todo-list/components/todo-list";
+import { TodoListInfinity } from "../modules/todo-list/components/todo-infinity";
 import { useState } from "react";
-import { useUser } from "../modules/auth/use-user";
-import { Login } from "../modules/auth/login";
-import { PageHeader } from "../modules/todo-list/page-header";
+import { useUser } from "../modules/auth/hooks/use-user";
+import { Login } from "../modules/auth/components/login";
+import { PageHeader } from "../modules/todo-list/components/page-header";
 
 export function App() {
   const [showInfinity, setShowInfinity] = useState(false);

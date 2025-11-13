@@ -1,7 +1,7 @@
 import { CreateTodoForm } from "./create-todo-form";
-import { useTodoListInfinity } from "./use-todo-list-infinity";
-import { useDeleteTodo } from "./use-delete-todo";
-import { useToggleTodo } from "./use-toggle-todo";
+import { useTodoListInfinity } from "../hooks/use-todo-list-infinity";
+import { useDeleteTodo } from "../hooks/use-delete-todo";
+import { useToggleTodo } from "../hooks/use-toggle-todo";
 import { TodoItem } from "./todo-item";
 
 export function TodoListInfinity() {

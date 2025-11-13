@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { todoListApi } from "./api";
+import { todoListApi } from "../api";
 import { useCallback, useRef } from "react";
 
 export function useTodoListInfinity(){

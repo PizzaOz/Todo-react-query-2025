@@ -1,4 +1,4 @@
-import { TodoDto } from "./api";
+import { TodoDto } from "../api";
 
 interface TodoItemProps {
   todo: TodoDto;

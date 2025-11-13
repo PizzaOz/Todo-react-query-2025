@@ -1,5 +1,5 @@
-import { LogoutButton } from "../auth/logout-button";
-import { useUser } from "../auth/use-user";
+import { LogoutButton } from "../../auth/components/logout-button";
+import { useUser } from "../../auth/hooks/use-user";
 
 interface PageHeaderProps {
   onToggleView: () => void;

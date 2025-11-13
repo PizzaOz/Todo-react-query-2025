@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { todoListApi } from "./api";
+import { todoListApi } from "../api";
 import { useState } from "react";
-import { useUser } from "../auth/use-user";
+import { useUser } from "../../auth/hooks/use-user";
 
 export function useTodoList(){
     const [page, setPage] = useState(1);

@@ -1,5 +1,5 @@
-import { useAppDispath } from "../../shared/redux";
-import { logoutThunk } from "./logout-thunk";
+import { useAppDispath } from "../../../shared/redux";
+import { logoutThunk } from "../logout-thunk";
 
 export function LogoutButton() {
   const dispatch = useAppDispath();

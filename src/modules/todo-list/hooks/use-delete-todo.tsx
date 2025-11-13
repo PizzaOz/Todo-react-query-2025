@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { PaginatedResult, TodoDto, todoListApi } from "./api";
+import { PaginatedResult, TodoDto, todoListApi } from "../api";
 
 export function useDeleteTodo() {
   const queryClient = useQueryClient();

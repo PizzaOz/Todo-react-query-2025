@@ -1,6 +1,6 @@
 
-import { useAppDispath } from "../../shared/redux";
-import { createTodoThunc, useCreateLoding } from "./create-todo-thunk";
+import { useAppDispath } from "../../../shared/redux";
+import { createTodoThunc, useCreateLoding } from "../create-todo-thunk";
 
 export function useCreateTodo() {
   const appDispatch = useAppDispath()

@@ -1,7 +1,7 @@
-import { useAppDispath, useAppSelector } from "../../shared/redux";
-import { authSlice } from "./auth-slice";
+import { useAppDispath, useAppSelector } from "../../../shared/redux";
+import { authSlice } from "../auth-slice";
 import { loginThunk, useLoginLoding } from "./login-thunk";
-import { registerThunk, useRegisterLoading } from "./register-thunk";
+import { registerThunk, useRegisterLoading } from "../register-thunk";
 import { useState } from "react";
 
 export function Login() {

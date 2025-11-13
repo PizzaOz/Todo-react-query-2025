@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAppSelector } from "../../shared/redux";
-import { authSlice } from "./auth-slice";
-import { authApi } from "./api";
+import { useAppSelector } from "../../../shared/redux";
+import { authSlice } from "../auth-slice";
+import { authApi } from "../api";
 
 
 export function useUser() {

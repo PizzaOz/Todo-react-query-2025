@@ -1,8 +1,8 @@
 import { MutationObserver, useMutation } from "@tanstack/react-query";
-import { AppThunk } from "../../shared/redux";
-import { queryClient } from "../../shared/api/query-client";
-import { authApi } from "./api";
-import { authSlice } from "./auth-slice";
+import { AppThunk } from "../../../shared/redux";
+import { queryClient } from "../../../shared/api/query-client";
+import { authApi } from "../api";
+import { authSlice } from "../auth-slice";
 
 export const loginThunk =
   (login: string, password: string): AppThunk =>
